@@ -247,12 +247,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const newWish = { name, status, guests, message };
 
         if (GOOGLE_SHEET_URL) {
-            fetch(GOOGLE_SHEET_URL, {
-                method: 'POST',
-                mode: 'cors',
-                headers: { 'Content-Type': 'text/plain' }, // Bypass preflight request
-                body: JSON.stringify(newWish)
-            })
+            const url = `${GOOGLE_SHEET_URL}?name=${encodeURIComponent(name)}&status=${encodeURIComponent(status)}&guests=${encodeURIComponent(guests)}&message=${encodeURIComponent(message)}`;
+            fetch(url)
             .then(res => {
                 if (!res.ok) throw new Error('Apps Script error');
                 return res.json();

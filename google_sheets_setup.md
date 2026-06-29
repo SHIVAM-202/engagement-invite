@@ -1,6 +1,6 @@
-# Google Sheets RSVP Database Setup Guide
+# Google Sheets RSVP Database Setup Guide (CORS-Proof Version)
 
-Follow these simple steps to connect your invitation webpage to a Google Sheet. Once done, all guest RSVPs will automatically save into your spreadsheet in real-time, and the webpage will load blessings directly from it!
+Follow these steps to connect your invitation webpage to a Google Sheet. By using a GET query system, we bypass browser CORS blocks completely, making the RSVP form 100% reliable on Vercel or GitHub Pages!
 
 ---
 
@@ -21,38 +21,39 @@ Follow these simple steps to connect your invitation webpage to a Google Sheet. 
 2. Delete any default code in the editor (`Code.gs`) and paste the following script:
 
 ```javascript
-// Google Apps Script to handle RSVP submissions and retrievals.
+// Google Apps Script to handle both RSVP submissions and retrievals.
 // Paste this directly into the Apps Script editor.
-
-function doPost(e) {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  try {
-    var data = JSON.parse(e.postData.contents);
-    var name = data.name;
-    var status = data.status === 'yes' ? 'Attending' : 'Declined';
-    var guests = data.status === 'yes' ? data.guests : '0';
-    var message = data.message;
-    var timestamp = new Date();
-    
-    // Append RSVP details into Google Sheet
-    sheet.appendRow([timestamp, name, status, guests, message]);
-    
-    return ContentService.createTextOutput(JSON.stringify({ "result": "success" }))
-                         .setMimeType(ContentService.MimeType.JSON)
-                         .setHeaders({
-                           'Access-Control-Allow-Origin': '*'
-                         });
-  } catch(err) {
-    return ContentService.createTextOutput(JSON.stringify({ "result": "error", "error": err.toString() }))
-                         .setMimeType(ContentService.MimeType.JSON)
-                         .setHeaders({
-                           'Access-Control-Allow-Origin': '*'
-                         });
-  }
-}
 
 function doGet(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  
+  // 1. DATA SUBMISSION: If name parameter is present, append a new RSVP row
+  if (e.parameter.name) {
+    try {
+      var name = e.parameter.name;
+      var status = e.parameter.status === 'yes' ? 'Attending' : 'Declined';
+      var guests = e.parameter.status === 'yes' ? e.parameter.guests : '0';
+      var message = e.parameter.message || '';
+      var timestamp = new Date();
+      
+      // Append RSVP details into Google Sheet
+      sheet.appendRow([timestamp, name, status, guests, message]);
+      
+      return ContentService.createTextOutput(JSON.stringify({ "result": "success" }))
+                           .setMimeType(ContentService.MimeType.JSON)
+                           .setHeaders({
+                             'Access-Control-Allow-Origin': '*'
+                           });
+    } catch(err) {
+      return ContentService.createTextOutput(JSON.stringify({ "result": "error", "error": err.toString() }))
+                           .setMimeType(ContentService.MimeType.JSON)
+                           .setHeaders({
+                             'Access-Control-Allow-Origin': '*'
+                           });
+    }
+  }
+  
+  // 2. DATA RETRIEVAL: Otherwise, read all RSVP rows and return them as a JSON list
   var rows = sheet.getDataRange().getValues();
   var wishes = [];
   
@@ -82,45 +83,21 @@ function doGet(e) {
 
 ---
 
-## Step 3: Deploy as a Web App
-1. Click the blue **Deploy** button in the top right corner and choose **New deployment**.
-2. Click the gear icon next to "Select type" and select **Web app**.
-3. Fill in the configuration:
-   - **Description:** `RSVP Web Service`
-   - **Execute as:** `Me (your email)`
-   - **Who has access:** `Anyone` (This is crucial so the guest webpage can submit RSVPs).
-4. Click **Deploy**.
-5. Google will ask you to **Authorize Access**. Click *Authorize Access*, select your Google Account, click *Advanced* (under warning), and click **Go to RSVP Web Service (unsafe)** to approve permissions.
-6. Once deployed, copy the **Web app URL** (it looks like `https://script.google.com/macros/s/.../exec`).
+## Step 3: Deploy/Redeploy as a Web App
+> [!IMPORTANT]
+> Since you have already deployed, you must deploy a **New Version** for Google to update the code.
+1. Click **Deploy** -> **Manage deployments** at the top right of your Apps Script editor.
+2. Click the **Edit icon (pencil)**.
+3. In the **Version** dropdown, select **New version**.
+4. Set "Who has access" to **Anyone** and click **Deploy**.
+5. Copy the **Web app URL** (it should look like `https://script.google.com/macros/s/AKfycb.../exec`).
 
 ---
 
 ## Step 4: Configure the Webpage
 1. Open the project file **[script.js](file:///d:/rsem/script.js)**.
-2. Find the configuration line at the top:
-   ```javascript
-   const GOOGLE_SHEET_URL = "";
-   ```
-3. Paste your copied Web App URL inside the quotes:
+2. Paste the copied Web App URL inside the quotes for `GOOGLE_SHEET_URL` at the top:
    ```javascript
    const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/YOUR-COPIED-ID/exec";
    ```
-4. Save the file.
-
----
-
-## Step 5: Host Your Website Live (100% Free)
-Since your invitation is now serverless, you can deploy it to any free static host. The fastest and easiest is **Netlify** or **Vercel**:
-
-### Option A: Netlify Drop (No Terminal/Git Required)
-1. Open [Netlify Drop](https://app.netlify.com/drop).
-2. Drag and drop your project folder `d:\rsem` (containing `index.html`, `style.css`, `script.js`, and `assets/`) directly onto the page.
-3. Within 10 seconds, Netlify will generate a live, shareable URL for your invitation!
-4. (Optional) Under site settings, you can rename the site to something like `shivam-richa-engagement.netlify.app`.
-
-### Option B: Vercel CLI (Via Terminal)
-1. Open PowerShell and run:
-   ```bash
-   npx vercel
-   ```
-2. Follow the prompt to log in and set up a new project in the directory. Within a minute, your invitation will be live on a Vercel URL!
+3. Save the file.
