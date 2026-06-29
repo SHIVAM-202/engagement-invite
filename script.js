@@ -176,6 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const isLocalFile = window.location.protocol === 'file:';
 
     function renderBlessings(wishes) {
+        if (!blessingsWall) return;
         blessingsWall.innerHTML = '';
         wishes.forEach(wish => {
             const card = document.createElement('div');
