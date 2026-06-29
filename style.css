@@ -870,3 +870,147 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* -------------------------------------------------------------
+   ENGAGEMENT CARD DECORATIONS (TRADITIONAL INDIAN THEME)
+   ------------------------------------------------------------- */
+
+/* Ganesha Icon */
+.ganesha-symbol {
+    margin: 15px auto 10px;
+    width: 65px;
+    height: 65px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
+}
+
+.ganesha-svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Rotating Mandala Backdrop */
+.mandala-bg {
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, transparent 20%, rgba(212, 175, 55, 0.04) 50%, transparent 70%);
+    border-radius: 50%;
+    border: 1px dashed rgba(212, 175, 55, 0.1);
+    animation: rotateMandala 90s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes rotateMandala {
+    100% { transform: translateX(-50%) rotate(360deg); }
+}
+
+/* Hanging Marigold strings down the borders */
+.marigold-string-left, .marigold-string-right {
+    position: absolute;
+    top: 30px;
+    width: 12px;
+    height: 240px;
+    background-image: 
+        radial-gradient(circle at center, #ffa500 3px, #ff4500 5px, transparent 6px),
+        radial-gradient(circle at center, #ffffff 1px, #d4af37 2.5px, transparent 3px);
+    background-size: 12px 14px;
+    background-repeat: repeat-y;
+    opacity: 0.9;
+    pointer-events: none;
+}
+
+.marigold-string-left { left: 18px; }
+.marigold-string-right { right: 18px; }
+
+/* Glowing Ceremony Diyas */
+.diyas-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 25px 0 10px;
+}
+
+.diya-glow {
+    position: relative;
+    width: 44px;
+    height: 22px;
+    background: linear-gradient(135deg, #a03c28 0%, #681a0d 100%);
+    border-radius: 0 0 22px 22px;
+    box-shadow: 0 5px 12px rgba(140, 28, 48, 0.2);
+    border: 1px solid rgba(212, 175, 55, 0.35);
+}
+
+.diya-glow::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: 17px;
+    width: 10px;
+    height: 17px;
+    background: radial-gradient(ellipse at bottom, #ffeb95 20%, #ff8c00 65%, #ff2200 100%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation: flameFlicker 1.6s ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 5px rgba(255, 170, 40, 0.95));
+    transform-origin: bottom center;
+}
+
+@keyframes flameFlicker {
+    0% { transform: scale(1) rotate(-1deg); }
+    50% { transform: scale(1.1) rotate(1.2deg); }
+    100% { transform: scale(0.95) rotate(-1.2deg); }
+}
+
+.diya-glow::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 3px;
+    width: 38px;
+    height: 3px;
+    background-color: #ffd800;
+    opacity: 0.7;
+    border-radius: 50%;
+}
+
+/* Main Card Ornate Borders & Corners */
+.invitation-card::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 1.5px solid rgba(212, 175, 55, 0.45);
+    pointer-events: none;
+    border-radius: calc(var(--border-radius-lg) - 5px);
+}
+
+.invitation-card::after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    border: 1px dashed rgba(212, 175, 55, 0.2);
+    pointer-events: none;
+    border-radius: calc(var(--border-radius-lg) - 10px);
+}
+
+/* Adjust card layout spacing for new header elements */
+.invitation-card {
+    padding-top: 50px;
+}
+
+@media (max-width: 550px) {
+    .marigold-string-left, .marigold-string-right {
+        display: none; /* Hide side strings on small mobile to save space */
+    }
+}
