@@ -460,6 +460,48 @@ body {
     text-align: left;
 }
 
+/* RSVP Thank You Card */
+.rsvp-thankyou-card {
+    text-align: center;
+    padding: 30px 20px;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    margin-top: 10px;
+    animation: fadeIn 0.6s ease-out;
+}
+
+.rsvp-thankyou-card .thankyou-icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+}
+
+.rsvp-thankyou-card h4 {
+    font-family: 'Cinzel', serif;
+    color: var(--color-primary-dark);
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.rsvp-thankyou-card p {
+    font-size: 0.95rem;
+    color: var(--color-text-main);
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.rsvp-thankyou-card .thankyou-note {
+    font-family: 'Great Vibes', cursive;
+    color: var(--color-accent);
+    font-size: 1.7rem;
+    margin-bottom: 0;
+    line-height: 1.3;
+    padding-top: 5px;
+}
+
 .rsvp-section .section-title {
     text-align: center;
 }

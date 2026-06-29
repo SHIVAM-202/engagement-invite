@@ -166,6 +166,43 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    const rsvpThankYou = document.getElementById('rsvpThankYou');
+    const btnEditRsvp = document.getElementById('btnEditRsvp');
+
+    function showThankYouState(status) {
+        if (!rsvpThankYou || !rsvpForm) return;
+        rsvpForm.style.display = 'none';
+        rsvpThankYou.style.display = 'block';
+        
+        const rsvpThankYouText = rsvpThankYou.querySelector('p');
+        const rsvpThankYouNote = rsvpThankYou.querySelector('.thankyou-note');
+        
+        if (status === 'no') {
+            if (rsvpThankYouText) rsvpThankYouText.textContent = "We will miss you, but thank you for letting us know!";
+            if (rsvpThankYouNote) rsvpThankYouNote.style.display = 'none';
+        } else {
+            if (rsvpThankYouText) rsvpThankYouText.textContent = "Your RSVP response has been successfully saved.";
+            if (rsvpThankYouNote) rsvpThankYouNote.style.display = 'block';
+        }
+    }
+
+    // Check if user has already RSVP'd on this device
+    const userRsvpStatus = localStorage.getItem('user_rsvp_status');
+    if (userRsvpStatus && rsvpForm) {
+        setTimeout(() => {
+            showThankYouState(userRsvpStatus);
+        }, 50);
+    }
+
+    if (btnEditRsvp) {
+        btnEditRsvp.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('user_rsvp_status');
+            if (rsvpThankYou) rsvpThankYou.style.display = 'none';
+            if (rsvpForm) rsvpForm.style.display = 'block';
+        });
+    }
+
     // Preloaded Wishes if storage is empty
     const DEFAULT_WISHES = [
         { name: "Aarav & Pooja Patel", status: "yes", guests: "2", message: "Congratulations Richa and Shivam! So happy for both of you. Wishing you a beautiful journey ahead!" },
@@ -268,9 +305,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 wishes.unshift(newWish);
                 localStorage.setItem('engagement_wishes', JSON.stringify(wishes));
 
+                localStorage.setItem('user_rsvp_status', status);
                 loadBlessings();
                 rsvpForm.reset();
                 guestsCountGroup.style.display = 'block';
+                showThankYouState(status);
                 showToast("RSVP Saved! Thank you for responding.");
             })
             .catch(err => {
@@ -281,18 +320,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 let wishes = JSON.parse(localStorage.getItem('engagement_wishes')) || [];
                 wishes.unshift(newWish);
                 localStorage.setItem('engagement_wishes', JSON.stringify(wishes));
+                
+                localStorage.setItem('user_rsvp_status', status);
                 loadBlessings();
                 rsvpForm.reset();
                 guestsCountGroup.style.display = 'block';
+                showThankYouState(status);
             });
         } else if (isLocalFile) {
             let wishes = JSON.parse(localStorage.getItem('engagement_wishes')) || [];
             wishes.unshift(newWish); // Add to beginning of list
             localStorage.setItem('engagement_wishes', JSON.stringify(wishes));
 
+            localStorage.setItem('user_rsvp_status', status);
             loadBlessings();
             rsvpForm.reset();
             guestsCountGroup.style.display = 'block'; // Reset display state
+            showThankYouState(status);
             showToast("RSVP Submitted! Thank you for responding.");
         } else {
             fetch('/api/rsvp', {
@@ -305,9 +349,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 return res.json();
             })
             .then(data => {
+                localStorage.setItem('user_rsvp_status', status);
                 loadBlessings();
                 rsvpForm.reset();
                 guestsCountGroup.style.display = 'block';
+                showThankYouState(status);
                 showToast("RSVP Saved! Thank you for responding.");
             })
             .catch(err => {
@@ -318,9 +364,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 let wishes = JSON.parse(localStorage.getItem('engagement_wishes')) || [];
                 wishes.unshift(newWish);
                 localStorage.setItem('engagement_wishes', JSON.stringify(wishes));
+                
+                localStorage.setItem('user_rsvp_status', status);
                 loadBlessings();
                 rsvpForm.reset();
                 guestsCountGroup.style.display = 'block';
+                showThankYouState(status);
             });
         }
     });
