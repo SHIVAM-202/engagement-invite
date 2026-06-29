@@ -31,7 +31,10 @@
 
 body {
     font-family: 'Outfit', sans-serif;
-    background: radial-gradient(circle, #540b17 0%, #290308 100%);
+    background: 
+        linear-gradient(rgba(41, 3, 8, 0.1), rgba(41, 3, 8, 0.35)),
+        url('assets/sprinkles.png') repeat;
+    background-size: 320px 320px;
     color: var(--color-text-main);
     overflow-x: hidden;
     min-height: 100vh;
