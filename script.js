@@ -248,12 +248,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (GOOGLE_SHEET_URL) {
             const url = `${GOOGLE_SHEET_URL}?name=${encodeURIComponent(name)}&status=${encodeURIComponent(status)}&guests=${encodeURIComponent(guests)}&message=${encodeURIComponent(message)}`;
-            fetch(url)
-            .then(res => {
-                if (!res.ok) throw new Error('Apps Script error');
-                return res.json();
-            })
-            .then(data => {
+            fetch(url, { mode: 'no-cors' })
+            .then(() => {
+                // Save a local backup so it shows up in dashboard instantly
+                let wishes = JSON.parse(localStorage.getItem('engagement_wishes')) || [];
+                wishes.unshift(newWish);
+                localStorage.setItem('engagement_wishes', JSON.stringify(wishes));
+
                 loadBlessings();
                 rsvpForm.reset();
                 guestsCountGroup.style.display = 'block';
