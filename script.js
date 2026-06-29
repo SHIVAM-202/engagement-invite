@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     btnCalendar.addEventListener('click', () => {
         // Universal .ics File Generation
-        const title = "Shivam & Richa Engagement Ceremony";
+        const title = "Richa & Shivam Engagement Ceremony";
         const desc = "We are getting engaged! Please join us in celebrating our love at Gokul Party Plot, Vadodara.";
         const loc = VENUE_ADDRESS;
         
@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "BEGIN:VALARM",
             "TRIGGER:-PT1440M", // 1 day before
             "ACTION:DISPLAY",
-            "DESCRIPTION:Reminder: Shivam & Richa Engagement tomorrow!",
+            "DESCRIPTION:Reminder: Richa & Shivam Engagement tomorrow!",
             "END:VALARM",
             "END:VEVENT",
             "END:VCALENDAR"
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const blob = new Blob([icsLines.join("\r\n")], { type: "text/calendar;charset=utf-8" });
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
-        link.setAttribute("download", "Shivam_Richa_Engagement.ics");
+        link.setAttribute("download", "Richa_Shivam_Engagement.ics");
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Preloaded Wishes if storage is empty
     const DEFAULT_WISHES = [
-        { name: "Aarav & Pooja Patel", status: "yes", guests: "2", message: "Congratulations Shivam and Richa! So happy for both of you. Wishing you a beautiful journey ahead!" },
+        { name: "Aarav & Pooja Patel", status: "yes", guests: "2", message: "Congratulations Richa and Shivam! So happy for both of you. Wishing you a beautiful journey ahead!" },
         { name: "Neha Darji", status: "yes", guests: "1", message: "Loads of love to the lovely couple! Can't wait to celebrate with you guys in Vadodara!" },
         { name: "Kunal Shah", status: "no", guests: "0", message: "Heartiest congratulations guys! Truly sorry I won't be able to make it, but sending my best blessings and wishes!" }
     ];
