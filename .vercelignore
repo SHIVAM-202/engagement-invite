@@ -1,0 +1,4 @@
+# Ignore backend files in Vercel to force a static deployment
+server.js
+rsvps.json
+google_sheets_setup.md
