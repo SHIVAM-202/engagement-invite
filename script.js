@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const VENUE_ADDRESS = "Gokul Party Plot, Vadodara, Gujarat";
     const MAPS_URL = "https://maps.google.com/?q=Gokul+Party+Plot+Vadodara";
     
-    // Paste your Google Apps Script Web App URL here after deployment:
-    const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbylTCqKE20vvUWkRCOO0rDCzYLvUiL1Tk1SoCmfXDTPTgBMGW5ilayIskNpSnh9yeKG/exec";
+    // Paste your Formspark Endpoint here:
+    const FORMSPARK_URL = "https://submit-form.com/vtj8WRX76";
 
     // -------------------------------------------------------------
     // 2. COUNTDOWN TIMER
@@ -246,10 +246,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const newWish = { name, status, guests, message };
 
-        if (GOOGLE_SHEET_URL) {
-            const url = `${GOOGLE_SHEET_URL}?name=${encodeURIComponent(name)}&status=${encodeURIComponent(status)}&guests=${encodeURIComponent(guests)}&message=${encodeURIComponent(message)}`;
-            fetch(url, { mode: 'no-cors' })
-            .then(() => {
+        if (FORMSPARK_URL) {
+            fetch(FORMSPARK_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    status: status === 'yes' ? 'Attending' : 'Declined',
+                    guests: status === 'yes' ? guests : '0',
+                    message: message
+                })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Formspark submission failed');
+                
                 // Save a local backup so it shows up in dashboard instantly
                 let wishes = JSON.parse(localStorage.getItem('engagement_wishes')) || [];
                 wishes.unshift(newWish);
@@ -261,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 showToast("RSVP Saved! Thank you for responding.");
             })
             .catch(err => {
-                console.error('Error saving RSVP to Google Sheet:', err);
+                console.error('Error saving RSVP to Formspark:', err);
                 showToast("Server error. Saving locally...");
                 
                 // Fallback to local storage
@@ -474,14 +487,7 @@ document.addEventListener('DOMContentLoaded', () => {
             statTotal.textContent = wishes.length;
         }
 
-        if (GOOGLE_SHEET_URL) {
-            fetch(GOOGLE_SHEET_URL)
-                .then(res => res.json())
-                .then(wishes => populateAdminData(wishes))
-                .catch(err => {
-                    console.error('Error fetching admin data from Google Sheet:', err);
-                });
-        } else if (isLocalFile) {
+        if (FORMSPARK_URL || isLocalFile) {
             const wishes = JSON.parse(localStorage.getItem('engagement_wishes')) || DEFAULT_WISHES;
             populateAdminData(wishes);
         } else {
