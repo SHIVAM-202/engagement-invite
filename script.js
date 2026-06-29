@@ -246,17 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function loadBlessings() {
-        if (GOOGLE_SHEET_URL) {
-            fetch(GOOGLE_SHEET_URL)
-                .then(res => res.json())
-                .then(wishes => {
-                    renderBlessings(wishes);
-                })
-                .catch(err => {
-                    console.error('Error fetching RSVPs from Google Sheets, using default preloads', err);
-                    renderBlessings(DEFAULT_WISHES);
-                });
-        } else if (isLocalFile) {
+        if (FORMSPARK_URL || isLocalFile) {
             let wishes = JSON.parse(localStorage.getItem('engagement_wishes'));
             if (!wishes) {
                 wishes = DEFAULT_WISHES;
