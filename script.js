@@ -492,6 +492,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.error('Error fetching admin data:', err);
                 });
         }
+    // PDF Print Generation
+    const btnPDF = document.getElementById('btnPDF');
+    if (btnPDF) {
+        btnPDF.addEventListener('click', () => {
+            window.print();
+        });
     }
 
     animate();

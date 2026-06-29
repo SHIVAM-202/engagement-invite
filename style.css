@@ -1099,3 +1099,48 @@ body {
     color: var(--color-gold-med);
     font-size: 0.85rem;
 }
+
+/* -------------------------------------------------------------
+   PRINT & PDF LAYOUT STYLING
+   ------------------------------------------------------------- */
+@media print {
+    body {
+        background: none !important;
+        background-color: #ffffff !important;
+    }
+    
+    #particleCanvas,
+    .audio-control,
+    .audio-pulse,
+    .venue-actions,
+    .rsvp-section,
+    .diyas-container,
+    .invitation-footer,
+    #toast,
+    #adminDashboard {
+        display: none !important;
+    }
+    
+    .wrapper {
+        padding: 0 !important;
+        margin: 0 !important;
+        min-height: auto !important;
+    }
+    
+    .invitation-card {
+        border: 2px solid var(--color-gold-med) !important;
+        box-shadow: none !important;
+        margin: 0 auto !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        padding-top: 40px !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        page-break-inside: avoid;
+    }
+    
+    .marigold-string-left,
+    .marigold-string-right {
+        display: block !important; /* Force side marigolds to render on print */
+    }
+}
