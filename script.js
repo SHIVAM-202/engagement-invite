@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const MAPS_URL = "https://maps.google.com/?q=Gokul+Party+Plot+Vadodara";
     
     // Paste your Google Apps Script Web App URL here after deployment:
-    const GOOGLE_SHEET_URL = "";
+    const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwqHuqcKoWBIcC4Llztw1vnHN0rbTOtTjK0EicCvNZ3goTmJeCrEcj2xuM3tuGhGyQ_/exec";
 
     // -------------------------------------------------------------
     // 2. COUNTDOWN TIMER
