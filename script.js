@@ -284,18 +284,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const newWish = { name, status, guests, message };
 
         if (FORMSPARK_URL) {
+            const payload = new URLSearchParams();
+            payload.append('name', name);
+            payload.append('status', status === 'yes' ? 'Attending' : 'Declined');
+            payload.append('guests', status === 'yes' ? guests : '0');
+            payload.append('message', message);
+
             fetch(FORMSPARK_URL, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded',
                     'Accept': 'application/json'
                 },
-                body: JSON.stringify({
-                    name: name,
-                    status: status === 'yes' ? 'Attending' : 'Declined',
-                    guests: status === 'yes' ? guests : '0',
-                    message: message
-                })
+                body: payload.toString()
             })
             .then(res => {
                 if (!res.ok) throw new Error('Formspark submission failed');
