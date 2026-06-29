@@ -193,10 +193,41 @@
                     </button>
                 </div>
             </section>
-
-
-
- 
+            <!-- RSVP Form Section -->
+            <section class="rsvp-section">
+                <h3 class="section-title">RSVP</h3>
+                <p class="section-subtitle">Please let us know if you can join us on our special day by submitting the form below.</p>
+                <form id="rsvpForm" class="rsvp-form">
+                    <div class="form-group">
+                        <label for="guestName">Your Name</label>
+                        <input type="text" id="guestName" required placeholder="Enter your full name">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="rsvpStatus">Will you attend?</label>
+                            <select id="rsvpStatus" required>
+                                <option value="yes">Yes, I'd love to!</option>
+                                <option value="no">Sorry, I can't make it</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="guestsCountGroup">
+                            <label for="guestsCount">Number of Guests</label>
+                            <select id="guestsCount">
+                                <option value="1">1 Person</option>
+                                <option value="2">2 People</option>
+                                <option value="3">3 People</option>
+                                <option value="4">4 People</option>
+                                <option value="5+">5+ People</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="guestMessage">Wishes & Blessings</label>
+                        <textarea id="guestMessage" rows="3" placeholder="Leave a sweet blessing or message for the couple..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-gold btn-block">Submit Response</button>
+                </form>
+            </section>
              <!-- Footer Section -->
             <footer class="invitation-footer">
                 <div class="footer-divider">
