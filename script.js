@@ -302,15 +302,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             fetch(FORMSPARK_URL, {
                 method: 'POST',
+                mode: 'no-cors',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Accept': 'application/json'
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 body: payload.toString()
             })
-            .then(res => {
-                if (!res.ok) throw new Error('Formspark submission failed');
-                
+            .then(() => {
                 // Save a local backup so it shows up in dashboard instantly
                 let wishes = JSON.parse(localStorage.getItem('engagement_wishes')) || [];
                 wishes.unshift(newWish);
