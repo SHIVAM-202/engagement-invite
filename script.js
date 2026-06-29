@@ -294,6 +294,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const newWish = { name, status, guests, message };
 
         if (FORMSPARK_URL) {
+            // 1. Instantly transition to Thank You page and save locally
+            let wishes = JSON.parse(localStorage.getItem('engagement_wishes')) || [];
+            wishes.unshift(newWish);
+            localStorage.setItem('engagement_wishes', JSON.stringify(wishes));
+
+            localStorage.setItem('user_rsvp_status', status);
+            loadBlessings();
+            rsvpForm.reset();
+            guestsCountGroup.style.display = 'block';
+            showThankYouState(status);
+            showToast("RSVP Saved! Thank you for responding.");
+
+            // 2. Sync to Formspark in the background
             const payload = new URLSearchParams();
             payload.append('name', name);
             payload.append('status', status === 'yes' ? 'Attending' : 'Declined');
@@ -308,33 +321,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 body: payload.toString()
             })
-            .then(() => {
-                // Save a local backup so it shows up in dashboard instantly
-                let wishes = JSON.parse(localStorage.getItem('engagement_wishes')) || [];
-                wishes.unshift(newWish);
-                localStorage.setItem('engagement_wishes', JSON.stringify(wishes));
-
-                localStorage.setItem('user_rsvp_status', status);
-                loadBlessings();
-                rsvpForm.reset();
-                guestsCountGroup.style.display = 'block';
-                showThankYouState(status);
-                showToast("RSVP Saved! Thank you for responding.");
-            })
             .catch(err => {
-                console.error('Error saving RSVP to Formspark:', err);
-                showToast("Server error. Saving locally...");
-                
-                // Fallback to local storage
-                let wishes = JSON.parse(localStorage.getItem('engagement_wishes')) || [];
-                wishes.unshift(newWish);
-                localStorage.setItem('engagement_wishes', JSON.stringify(wishes));
-                
-                localStorage.setItem('user_rsvp_status', status);
-                loadBlessings();
-                rsvpForm.reset();
-                guestsCountGroup.style.display = 'block';
-                showThankYouState(status);
+                console.warn('Background sync to Formspark failed (this is normal if adblocker is active):', err);
             });
         } else if (isLocalFile) {
             let wishes = JSON.parse(localStorage.getItem('engagement_wishes')) || [];
