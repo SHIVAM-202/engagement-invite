@@ -884,24 +884,20 @@ body {
 /* Ganesha Icon */
 .ganesha-symbol {
     margin: 15px auto 10px;
-    width: 65px;
-    height: 65px;
-    background-color: #0d0d0d; /* Onyx Black Medallion */
-    border: 2px solid var(--color-gold-med);
-    border-radius: 50%;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
+    width: 70px;
+    height: 70px;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
     z-index: 10;
+    mix-blend-mode: multiply; /* Makes white background transparent */
 }
 
 .ganesha-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 /* Rotating Mandala Backdrop */
