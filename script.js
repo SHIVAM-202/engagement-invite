@@ -166,40 +166,50 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    const rsvpThankYou = document.getElementById('rsvpThankYou');
-    const btnEditRsvp = document.getElementById('btnEditRsvp');
+    const mainInvitationCard = document.getElementById('mainInvitationCard');
+    const rsvpThankYouScreen = document.getElementById('rsvpThankYouScreen');
+    const btnEditRsvpScreen = document.getElementById('btnEditRsvpScreen');
 
     function showThankYouState(status) {
-        if (!rsvpThankYou || !rsvpForm) return;
-        rsvpForm.style.display = 'none';
-        rsvpThankYou.style.display = 'block';
+        if (!rsvpThankYouScreen || !mainInvitationCard) return;
         
-        const rsvpThankYouText = rsvpThankYou.querySelector('p');
-        const rsvpThankYouNote = rsvpThankYou.querySelector('.thankyou-note');
+        mainInvitationCard.style.display = 'none';
+        rsvpThankYouScreen.style.display = 'flex';
+        
+        const thankYouMsgText = document.getElementById('thankYouMsgText');
+        const thankyouNoteScreen = rsvpThankYouScreen.querySelector('.thankyou-note-screen');
         
         if (status === 'no') {
-            if (rsvpThankYouText) rsvpThankYouText.textContent = "We will miss you, but thank you for letting us know!";
-            if (rsvpThankYouNote) rsvpThankYouNote.style.display = 'none';
+            if (thankYouMsgText) thankYouMsgText.textContent = "We will miss you, but thank you for letting us know!";
+            if (thankyouNoteScreen) thankyouNoteScreen.style.display = 'none';
         } else {
-            if (rsvpThankYouText) rsvpThankYouText.textContent = "Your RSVP response has been successfully saved.";
-            if (rsvpThankYouNote) rsvpThankYouNote.style.display = 'block';
+            if (thankYouMsgText) thankYouMsgText.textContent = "Your RSVP response has been successfully saved.";
+            if (thankyouNoteScreen) thankyouNoteScreen.style.display = 'block';
         }
     }
 
     // Check if user has already RSVP'd on this device
     const userRsvpStatus = localStorage.getItem('user_rsvp_status');
-    if (userRsvpStatus && rsvpForm) {
+    if (userRsvpStatus && mainInvitationCard) {
         setTimeout(() => {
             showThankYouState(userRsvpStatus);
         }, 50);
     }
 
-    if (btnEditRsvp) {
-        btnEditRsvp.addEventListener('click', (e) => {
+    if (btnEditRsvpScreen) {
+        btnEditRsvpScreen.addEventListener('click', (e) => {
             e.preventDefault();
             localStorage.removeItem('user_rsvp_status');
-            if (rsvpThankYou) rsvpThankYou.style.display = 'none';
-            if (rsvpForm) rsvpForm.style.display = 'block';
+            if (rsvpThankYouScreen) rsvpThankYouScreen.style.display = 'none';
+            if (mainInvitationCard) mainInvitationCard.style.display = 'block';
+            
+            // Scroll to the RSVP section
+            const rsvpSection = document.querySelector('.rsvp-section');
+            if (rsvpSection) {
+                setTimeout(() => {
+                    rsvpSection.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
         });
     }
 

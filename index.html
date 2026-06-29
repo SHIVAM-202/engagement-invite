@@ -45,7 +45,7 @@
 
     <div class="wrapper">
         <!-- Main Invitation Container -->
-        <main class="invitation-card">
+        <main class="invitation-card" id="mainInvitationCard">
             <!-- Corner Ornaments for Royal Border -->
             <div class="corner-decoration top-left"></div>
             <div class="corner-decoration top-right"></div>
@@ -227,15 +227,6 @@
                     </div>
                     <button type="submit" class="btn btn-gold btn-block">Submit Response</button>
                 </form>
-                
-                <!-- Thank You Card (hidden by default) -->
-                <div id="rsvpThankYou" class="rsvp-thankyou-card" style="display: none;">
-                    <div class="thankyou-icon">💍</div>
-                    <h4>Thank You!</h4>
-                    <p>Your RSVP response has been successfully saved.</p>
-                    <p class="thankyou-note">We look forward to celebrating with you!</p>
-                    <a href="#" id="btnEditRsvp" style="display: inline-block; margin-top: 15px; font-size: 0.8rem; color: var(--color-accent); text-decoration: underline; font-weight: 500;">Change Response</a>
-                </div>
             </section>
              <!-- Footer Section -->
             <footer class="invitation-footer">
@@ -247,6 +238,40 @@
                 <p class="made-with-love">Created with ♥ for Richa & Shivam</p>
             </footer>
 
+        </main>
+
+        <!-- Full Screen Thank You Card -->
+        <main id="rsvpThankYouScreen" class="invitation-card rsvp-thankyou-screen" style="display: none; text-align: center; justify-content: center; align-items: center; padding: 40px 30px;">
+            <div class="corner-decoration top-left"></div>
+            <div class="corner-decoration top-right"></div>
+            <div class="corner-decoration bottom-left"></div>
+            <div class="corner-decoration bottom-right"></div>
+            
+            <div class="thankyou-content" style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh;">
+                <div class="ganesha-symbol" style="margin-bottom: 30px;">
+                    <img src="assets/ganesha.png" alt="Lord Ganesha" class="ganesha-image" style="max-height: 80px; width: auto;">
+                </div>
+                
+                <span class="save-the-date" style="font-size: 2.2rem; margin-bottom: 25px; letter-spacing: 2px;">Thank You</span>
+                
+                <div class="thankyou-icon" style="font-size: 4rem; margin-bottom: 25px; animation: pulse 2s infinite;">💍</div>
+                
+                <p id="thankYouMsgText" style="font-size: 1.15rem; line-height: 1.6; color: var(--color-text-main); margin-bottom: 20px; font-weight: 500; max-width: 90%;">
+                    Your RSVP response has been successfully saved.
+                </p>
+                
+                <p class="thankyou-note-screen" style="font-family: 'Great Vibes', cursive; color: var(--color-accent); font-size: 2.4rem; margin-bottom: 45px; line-height: 1.2;">
+                    We look forward to celebrating with you!
+                </p>
+                
+                <div class="names-signature" style="font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--color-primary-dark); font-weight: 600; letter-spacing: 2px; border-top: 1.5px solid rgba(212,175,55,0.3); padding-top: 20px; min-width: 200px;">
+                    Richa & Shivam
+                </div>
+                
+                <div style="margin-top: 50px;">
+                    <button id="btnEditRsvpScreen" class="btn btn-secondary">Change Response</button>
+                </div>
+            </div>
         </main>
     </div>
 
