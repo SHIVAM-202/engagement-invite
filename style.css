@@ -71,9 +71,12 @@ body {
     padding: 70px 40px 40px;
     text-align: center;
     background-image: 
-        radial-gradient(circle at top left, rgba(212, 175, 55, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at bottom right, rgba(140, 28, 48, 0.04) 0%, transparent 50%),
-        repeating-linear-gradient(45deg, rgba(212, 175, 55, 0.01) 0px, rgba(212, 175, 55, 0.01) 2px, transparent 2px, transparent 10px);
+        radial-gradient(circle at top left, rgba(212, 175, 55, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at bottom right, rgba(140, 28, 48, 0.03) 0%, transparent 50%),
+        url('assets/card_pattern.png');
+    background-repeat: repeat;
+    background-size: 240px 240px;
+    background-blend-mode: multiply;
     overflow: hidden;
 }
 
