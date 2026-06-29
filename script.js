@@ -493,14 +493,5 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
         }
     }
-    
-    // PDF Print Generation
-    const btnPDF = document.getElementById('btnPDF');
-    if (btnPDF) {
-        btnPDF.addEventListener('click', () => {
-            window.print();
-        });
-    }
-
     animate();
 });
