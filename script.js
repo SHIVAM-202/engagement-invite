@@ -496,8 +496,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // -------------------------------------------------------------
     // 7. ADMIN DASHBOARD TOGGLE & RENDERING
     // -------------------------------------------------------------
-    const urlParams = new URLSearchParams(window.location.search);
-    const isAdmin = urlParams.get('admin') === 'true';
+    const adminUrlParams = new URLSearchParams(window.location.search);
+    const isAdmin = adminUrlParams.get('admin') === 'true';
     const adminDashboard = document.getElementById('adminDashboard');
     const closeAdminBtn = document.getElementById('closeAdminBtn');
     
