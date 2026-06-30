@@ -188,11 +188,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Check if user has already RSVP'd on this device
-    const userRsvpStatus = localStorage.getItem('user_rsvp_status');
-    if (userRsvpStatus && mainInvitationCard) {
+    // Handle redirect parameters from Formspark callback
+    const urlParams = new URLSearchParams(window.location.search);
+    const statusParam = urlParams.get('status');
+    let finalRsvpStatus = localStorage.getItem('user_rsvp_status');
+
+    if (statusParam === 'success') {
+        const attendingParam = urlParams.get('attending');
+        if (attendingParam) {
+            finalRsvpStatus = attendingParam;
+            localStorage.setItem('user_rsvp_status', attendingParam);
+        }
+        // Clean URL parameters from browser address bar
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    if (finalRsvpStatus && mainInvitationCard) {
         setTimeout(() => {
-            showThankYouState(userRsvpStatus);
+            showThankYouState(finalRsvpStatus);
         }, 50);
     }
 
@@ -273,91 +286,81 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     rsvpForm.addEventListener('submit', (e) => {
-        e.preventDefault();
         const name = document.getElementById('guestName').value.trim();
         const status = rsvpStatus.value;
         const guests = status === 'yes' ? document.getElementById('guestsCount').value : '0';
         const message = document.getElementById('guestMessage').value.trim();
 
-        if (!name) return;
+        if (!name) {
+            e.preventDefault();
+            return;
+        }
 
         const newWish = { name, status, guests, message };
 
         if (FORMSPARK_URL) {
-            // 1. Instantly transition to Thank You page and save locally
+            // Save local backup immediately before redirecting
             let wishes = JSON.parse(localStorage.getItem('engagement_wishes')) || [];
             wishes.unshift(newWish);
             localStorage.setItem('engagement_wishes', JSON.stringify(wishes));
 
             localStorage.setItem('user_rsvp_status', status);
-            loadBlessings();
-            rsvpForm.reset();
-            guestsCountGroup.style.display = 'block';
-            showThankYouState(status);
-            showToast("RSVP Saved! Thank you for responding.");
-
-            // 2. Sync to Formspark in the background
-            const payload = new URLSearchParams();
-            payload.append('name', name);
-            payload.append('status', status === 'yes' ? 'Attending' : 'Declined');
-            payload.append('guests', status === 'yes' ? guests : '0');
-            payload.append('message', message);
-
-            fetch(FORMSPARK_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: payload.toString()
-            })
-            .catch(err => {
-                console.warn('Background sync to Formspark failed (this is normal if adblocker is active):', err);
-            });
-        } else if (isLocalFile) {
-            let wishes = JSON.parse(localStorage.getItem('engagement_wishes')) || [];
-            wishes.unshift(newWish); // Add to beginning of list
-            localStorage.setItem('engagement_wishes', JSON.stringify(wishes));
-
-            localStorage.setItem('user_rsvp_status', status);
-            loadBlessings();
-            rsvpForm.reset();
-            guestsCountGroup.style.display = 'block'; // Reset display state
-            showThankYouState(status);
-            showToast("RSVP Submitted! Thank you for responding.");
+            
+            // Set the custom redirect URL dynamically to go back to this exact page
+            const redirectInput = document.getElementById('formsparkRedirect');
+            if (redirectInput) {
+                // Dynamically build redirect link with status parameter
+                redirectInput.value = window.location.origin + window.location.pathname + '?status=success&attending=' + status;
+            }
+            
+            // Form submits naturally to Formspark, no e.preventDefault()
         } else {
-            fetch('/api/rsvp', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newWish)
-            })
-            .then(res => {
-                if (!res.ok) throw new Error('Server error');
-                return res.json();
-            })
-            .then(data => {
-                localStorage.setItem('user_rsvp_status', status);
-                loadBlessings();
-                rsvpForm.reset();
-                guestsCountGroup.style.display = 'block';
-                showThankYouState(status);
-                showToast("RSVP Saved! Thank you for responding.");
-            })
-            .catch(err => {
-                console.error('Error saving RSVP to server:', err);
-                showToast("Server error. Saving locally...");
-                
-                // Fallback to local storage
+            e.preventDefault();
+            if (isLocalFile) {
                 let wishes = JSON.parse(localStorage.getItem('engagement_wishes')) || [];
-                wishes.unshift(newWish);
+                wishes.unshift(newWish); // Add to beginning of list
                 localStorage.setItem('engagement_wishes', JSON.stringify(wishes));
-                
+
                 localStorage.setItem('user_rsvp_status', status);
                 loadBlessings();
                 rsvpForm.reset();
-                guestsCountGroup.style.display = 'block';
+                guestsCountGroup.style.display = 'block'; // Reset display state
                 showThankYouState(status);
-            });
+                showToast("RSVP Submitted! Thank you for responding.");
+            } else {
+                fetch('/api/rsvp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newWish)
+                })
+                .then(res => {
+                    if (!res.ok) throw new Error('Server error');
+                    return res.json();
+                })
+                .then(data => {
+                    localStorage.setItem('user_rsvp_status', status);
+                    loadBlessings();
+                    rsvpForm.reset();
+                    guestsCountGroup.style.display = 'block';
+                    showThankYouState(status);
+                    showToast("RSVP Saved! Thank you for responding.");
+                })
+                .catch(err => {
+                    console.error('Error saving RSVP to server:', err);
+                    showToast("Server error. Saving locally...");
+                    
+                    // Fallback to local storage
+                    let wishes = JSON.parse(localStorage.getItem('engagement_wishes')) || [];
+                    wishes.unshift(newWish);
+                    localStorage.setItem('engagement_wishes', JSON.stringify(wishes));
+                    
+                    localStorage.setItem('user_rsvp_status', status);
+                    loadBlessings();
+                    rsvpForm.reset();
+                    guestsCountGroup.style.display = 'block';
+                    showThankYouState(status);
+                });
+            }
         }
     });
 

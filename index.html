@@ -197,22 +197,25 @@
             <section class="rsvp-section">
                 <h3 class="section-title">RSVP</h3>
                 <p class="section-subtitle">Please let us know if you can join us on our special day by submitting the form below.</p>
-                <form id="rsvpForm" class="rsvp-form">
+                <form id="rsvpForm" class="rsvp-form" action="https://submit-form.com/vtj8WRX76" method="POST">
+                    <!-- Formspark Custom Redirect -->
+                    <input type="hidden" name="_redirect" id="formsparkRedirect" value="https://richaandshivam.xyz/?status=success">
+                    
                     <div class="form-group">
                         <label for="guestName">Your Name</label>
-                        <input type="text" id="guestName" required placeholder="Enter your full name">
+                        <input type="text" id="guestName" name="name" required placeholder="Enter your full name">
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="rsvpStatus">Will you attend?</label>
-                            <select id="rsvpStatus" required>
+                            <select id="rsvpStatus" name="status" required>
                                 <option value="yes">Yes, I'd love to!</option>
                                 <option value="no">Sorry, I can't make it</option>
                             </select>
                         </div>
                         <div class="form-group" id="guestsCountGroup">
                             <label for="guestsCount">Number of Guests</label>
-                            <select id="guestsCount">
+                            <select id="guestsCount" name="guests">
                                 <option value="1">1 Person</option>
                                 <option value="2">2 People</option>
                                 <option value="3">3 People</option>
@@ -223,7 +226,7 @@
                     </div>
                     <div class="form-group">
                         <label for="guestMessage">Wishes & Blessings</label>
-                        <textarea id="guestMessage" rows="3" placeholder="Leave a sweet blessing or message for the couple..."></textarea>
+                        <textarea id="guestMessage" name="message" rows="3" placeholder="Leave a sweet blessing or message for the couple..."></textarea>
                     </div>
                     <button type="submit" class="btn btn-gold btn-block">Submit Response</button>
                 </form>
@@ -266,9 +269,8 @@
                 
                 <div class="names-signature" style="font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--color-primary-dark); font-weight: 600; letter-spacing: 2px; border-top: 1.5px solid rgba(212,175,55,0.3); padding-top: 20px; min-width: 200px;">
                     Richa & Shivam
-                </div>
-                
-                <div style="margin-top: 50px;">
+                </div>                
+                <div style="margin-top: 40px;">
                     <button id="btnEditRsvpScreen" class="btn btn-secondary">Change Response</button>
                 </div>
             </div>
@@ -317,6 +319,6 @@
         </div>
     </div>
 
-    <script src="script.js?v=30"></script>
+    <script src="script.js?v=31"></script>
 </body>
 </html>
